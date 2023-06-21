@@ -8,6 +8,7 @@ import com.likeminds.chatmm.conversation.model.AttachmentMetaViewData
 import com.likeminds.chatmm.conversation.model.AttachmentViewData
 import com.likeminds.chatmm.conversation.model.ConversationViewData
 import com.likeminds.chatmm.conversation.model.LinkOGTagsViewData
+import com.likeminds.chatmm.report.model.ReportTagViewData
 import com.likeminds.chatmm.search.model.SearchChatroomHeaderViewData
 import com.likeminds.chatmm.search.model.SearchChatroomTitleViewData
 import com.likeminds.chatmm.search.model.SearchConversationViewData
@@ -23,6 +24,7 @@ import com.likeminds.likemindschat.conversation.model.Conversation
 import com.likeminds.likemindschat.conversation.model.LinkOGTags
 import com.likeminds.likemindschat.helper.model.GroupTag
 import com.likeminds.likemindschat.helper.model.UserTag
+import com.likeminds.likemindschat.moderation.model.ReportTag
 import com.likeminds.likemindschat.search.model.SearchChatroom
 import com.likeminds.likemindschat.search.model.SearchConversation
 import com.likeminds.likemindschat.user.model.User
@@ -424,5 +426,21 @@ object ViewDataConverter {
             .userUniqueId(participant.userUniqueId)
             .customTitle(participant.customTitle)
             .build()
+    }
+
+    /**
+     * convert list of [ReportTag] to list of [ReportTagViewData]
+     * @param tags: list of [ReportTag]
+     * */
+    fun convertReportTag(
+        tags: List<ReportTag>
+    ): List<ReportTagViewData> {
+        return tags.map { tag ->
+            ReportTagViewData.Builder()
+                .id(tag.id)
+                .name(tag.name)
+                .isSelected(false)
+                .build()
+        }
     }
 }

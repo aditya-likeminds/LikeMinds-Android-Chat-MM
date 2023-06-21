@@ -70,4 +70,12 @@
         <item quantity="other">%d participants</item>
     </plurals>
     <string name="action_search">Search</string>
+    <string name="report_abuse">Report Abuse</string>
+    <string name="please_specify_the_problem_to_continue">Please specify the problem to continue.</string>
+    <string name="report_sub_header">You would be able to report this %s after selecting a problem.</string>
+    <string name="report">Report</string>
+    <string name="write_description">Write description</string>
+    <string name="report_s">Report %s</string>
+    <string name="please_select_at_least_one_report_tag">Please select at least one report tag.</string>
+    <string name="please_enter_a_reason">Please enter a reason.</string>
 </resources>

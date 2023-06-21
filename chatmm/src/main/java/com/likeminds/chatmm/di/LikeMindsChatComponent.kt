@@ -6,6 +6,7 @@ import com.likeminds.chatmm.di.chatroomdetail.ChatroomDetailComponent
 import com.likeminds.chatmm.di.explore.ExploreComponent
 import com.likeminds.chatmm.di.homefeed.HomeFeedComponent
 import com.likeminds.chatmm.di.homefeed.HomeFeedComponentModule
+import com.likeminds.chatmm.di.report.ReportComponent
 import com.likeminds.chatmm.di.search.SearchComponent
 import dagger.BindsInstance
 import dagger.Component
@@ -24,6 +25,7 @@ interface LikeMindsChatComponent {
     fun exploreComponent(): ExploreComponent.Factory
     fun chatroomDetailComponent(): ChatroomDetailComponent.Factory
     fun searchComponent(): SearchComponent.Factory
+    fun reportComponent(): ReportComponent.Factory
 
     @Component.Builder
     interface Builder {

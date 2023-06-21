@@ -13,6 +13,7 @@ import com.likeminds.chatmm.di.LikeMindsChatComponent
 import com.likeminds.chatmm.di.chatroomdetail.ChatroomDetailComponent
 import com.likeminds.chatmm.di.explore.ExploreComponent
 import com.likeminds.chatmm.di.homefeed.HomeFeedComponent
+import com.likeminds.chatmm.di.report.ReportComponent
 import com.likeminds.chatmm.di.search.SearchComponent
 import com.likeminds.likemindschat.LMChatClient
 import com.vanniktech.emoji.EmojiManager
@@ -32,6 +33,7 @@ class SDKApplication {
     private var exploreComponent: ExploreComponent? = null
     private var chatroomDetailComponent: ChatroomDetailComponent? = null
     private var searchComponent: SearchComponent? = null
+    private var reportComponent: ReportComponent? = null
 
     companion object {
         const val LOG_TAG = "LikeMindsChat"
@@ -135,5 +137,15 @@ class SDKApplication {
         }
 
         return searchComponent
+    }
+
+    /**
+     * initiate and return ReportComponent: All dependencies required for report package
+     * */
+    fun reportComponent(): ReportComponent? {
+        if (reportComponent == null) {
+            reportComponent = likeMindsChatComponent?.reportComponent()?.create()
+        }
+        return reportComponent
     }
 }

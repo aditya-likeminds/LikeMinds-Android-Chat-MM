@@ -1,4 +1,4 @@
-package com.likeminds.chatmm.moderation.model
+package com.likeminds.chatmm.report.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

@@ -1,12 +1,15 @@
-package com.likeminds.chatmm.moderation.view
+package com.likeminds.chatmm.report.view
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.likeminds.chatmm.moderation.model.ReportExtras
+import com.likeminds.chatmm.databinding.ActivityReportBinding
+import com.likeminds.chatmm.report.model.ReportExtras
 import com.likeminds.chatmm.utils.customview.BaseAppCompatActivity
 
 class ReportActivity : BaseAppCompatActivity() {
+
+    private lateinit var binding: ActivityReportBinding
 
     companion object {
         const val REPORT_EXTRAS = "REPORT_EXTRAS"
@@ -28,5 +31,11 @@ class ReportActivity : BaseAppCompatActivity() {
             intent.putExtra("bundle", bundle)
             return intent
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityReportBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 }
