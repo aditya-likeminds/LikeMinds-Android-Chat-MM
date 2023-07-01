@@ -186,7 +186,7 @@ class FollowedChatroomViewDataBinder(
                 tvLastConversation.text = ChatroomUtil.getDeletedMessage(
                     root.context,
                     lastConversation,
-                    sdkPreferences.getMemberId()
+                    sdkPreferences.getUUID()
                 )
             }
         }

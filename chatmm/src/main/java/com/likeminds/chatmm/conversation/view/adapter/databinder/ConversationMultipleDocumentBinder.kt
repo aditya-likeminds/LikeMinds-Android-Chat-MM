@@ -61,7 +61,7 @@ internal class ConversationMultipleDocumentBinder constructor(
                 tvCustomTitle,
                 tvCustomTitleDot,
                 data.memberViewData,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 chatroomDetailAdapterListener,
                 position,
                 conversationViewData = data,
@@ -75,7 +75,7 @@ internal class ConversationMultipleDocumentBinder constructor(
                 ChatroomConversationItemViewDataBinderUtil.initConversationBubbleDeletedTextView(
                     tvConversation,
                     tvDeleteMessage,
-                    sdkPreferences.getMemberId(),
+                    sdkPreferences.getUUID(),
                     conversationViewData = data
                 )
             } else {
@@ -102,7 +102,7 @@ internal class ConversationMultipleDocumentBinder constructor(
 
             ChatroomConversationItemViewDataBinderUtil.initTimeAndStatus(
                 tvTime,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 data.createdAt,
                 data.answer.isEmpty() && data.deletedBy == null,
                 imageViewStatus = ivConversationStatus,
@@ -111,7 +111,7 @@ internal class ConversationMultipleDocumentBinder constructor(
 
             ChatroomConversationItemViewDataBinderUtil.initReplyView(
                 viewReply,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 data.replyConversation,
                 data.replyChatroomId,
                 chatroomDetailAdapterListener,
@@ -127,7 +127,7 @@ internal class ConversationMultipleDocumentBinder constructor(
 
             ChatroomConversationItemViewDataBinderUtil.initReportView(
                 ivReport,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 chatroomDetailAdapterListener,
                 conversationViewData = data
             )

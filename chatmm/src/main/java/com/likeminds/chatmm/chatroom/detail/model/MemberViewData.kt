@@ -32,7 +32,8 @@ class MemberViewData private constructor(
     val showMoreView: Boolean?,
     val screenType: Int?,
     val updatedAt: Long?,
-    val userUniqueId: String?
+    val userUniqueId: String?,
+    val sdkClientInfo: SDKClientInfoViewData,
 ) : Parcelable, BaseViewType {
     override val viewType: Int
         get() = dynamicViewType
@@ -63,6 +64,7 @@ class MemberViewData private constructor(
         private var screenType: Int? = null
         private var updatedAt: Long? = null
         private var userUniqueId: String? = null
+        private var sdkClientInfo: SDKClientInfoViewData = SDKClientInfoViewData.Builder().build()
 
         fun id(id: String?) = apply { this.id = id }
         fun uid(uid: String?) = apply { this.uid = uid }
@@ -103,6 +105,8 @@ class MemberViewData private constructor(
         fun updatedAt(updatedAt: Long?) = apply { this.updatedAt = updatedAt }
 
         fun userUniqueId(userUniqueId: String?) = apply { this.userUniqueId = userUniqueId }
+        fun sdkClientInfo(sdkClientInfo: SDKClientInfoViewData) =
+            apply { this.sdkClientInfo = sdkClientInfo }
 
         fun build() = MemberViewData(
             id,
@@ -129,7 +133,8 @@ class MemberViewData private constructor(
             showMoreView,
             screenType,
             updatedAt,
-            userUniqueId
+            userUniqueId,
+            sdkClientInfo
         )
     }
 
@@ -159,5 +164,6 @@ class MemberViewData private constructor(
             .screenType(screenType)
             .updatedAt(updatedAt)
             .userUniqueId(userUniqueId)
+            .sdkClientInfo(sdkClientInfo)
     }
 }

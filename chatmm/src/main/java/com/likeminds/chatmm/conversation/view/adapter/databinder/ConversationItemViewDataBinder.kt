@@ -57,7 +57,7 @@ internal class ConversationItemViewDataBinder constructor(
                 tvCustomTitle,
                 tvCustomTitleDot,
                 data.memberViewData,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 adapterListener,
                 position,
                 conversationViewData = data,
@@ -69,7 +69,7 @@ internal class ConversationItemViewDataBinder constructor(
                 ChatroomConversationItemViewDataBinderUtil.initConversationBubbleDeletedTextView(
                     tvConversation,
                     tvDeleteMessage,
-                    sdkPreferences.getMemberId(),
+                    sdkPreferences.getUUID(),
                     conversationViewData = data
                 )
                 ivAddReaction.hide()
@@ -84,7 +84,7 @@ internal class ConversationItemViewDataBinder constructor(
                     tvDeleteMessage = tvDeleteMessage
                 )
 
-                if (data.memberViewData.id.equals(sdkPreferences.getMemberId())) {
+                if (data.memberViewData.sdkClientInfo.uuid == sdkPreferences.getUUID()) {
                     ivAddReaction.hide()
                 } else {
                     if (data.answer.length > ADD_REACTION_CHARACTER_CHECK || !data.reactions
@@ -98,7 +98,7 @@ internal class ConversationItemViewDataBinder constructor(
             }
             ChatroomConversationItemViewDataBinderUtil.initTimeAndStatus(
                 tvTime,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 data.createdAt,
                 imageViewStatus = ivConversationStatus,
                 conversation = data
@@ -106,7 +106,7 @@ internal class ConversationItemViewDataBinder constructor(
 
             ChatroomConversationItemViewDataBinderUtil.initReplyView(
                 viewReply,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 data.replyConversation,
                 data.replyChatroomId,
                 adapterListener,
@@ -120,7 +120,7 @@ internal class ConversationItemViewDataBinder constructor(
 
             ChatroomConversationItemViewDataBinderUtil.initReportView(
                 ivReport,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 adapterListener,
                 conversationViewData = data
             )

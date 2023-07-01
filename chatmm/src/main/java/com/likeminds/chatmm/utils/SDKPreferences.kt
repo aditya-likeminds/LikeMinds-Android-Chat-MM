@@ -15,12 +15,11 @@ class SDKPreferences @Inject constructor(
     companion object {
         const val SDK_PREFS = "sdk_prefs"
         const val USER_UNIQUE_ID = "user_unique_id"
-        const val MEMBER_ID = "member_id"
+        const val UUID = "uuid"
         const val MICRO_POLLS_ENABLED = "MICRO_POLLS_ENABLED"
         const val GIF_SUPPORT_ENABLED = "GIF_SUPPORT_ENABLED"
         const val AUDIO_SUPPORT_ENABLED = "AUDIO_SUPPORT_ENABLED"
         const val VOICE_NOTE_ENABLED = "VOICE_NOTE_SUPPORT_ENABLED"
-        const val HIDE_SECRET_CHATROOM_LOCK_ICON = "HIDE_SECRET_CHATROOM_LOCK_ICON"
 
         private const val API_KEY = "API_KEY"
         private const val IS_GUEST = "IS_GUEST"
@@ -42,12 +41,12 @@ class SDKPreferences @Inject constructor(
         putPreference(USER_UNIQUE_ID, userUniqueId)
     }
 
-    fun getMemberId(): String {
-        return getPreference(MEMBER_ID, "") ?: ""
+    fun getUUID(): String {
+        return getPreference(UUID, "") ?: ""
     }
 
-    fun setMemberId(memberId: String) {
-        putPreference(MEMBER_ID, memberId)
+    fun setUUID(uuid: String) {
+        putPreference(UUID, uuid)
     }
 
     fun setIsGuestUser(isGuest: Boolean?) {
@@ -99,7 +98,7 @@ class SDKPreferences @Inject constructor(
     fun clearAuthPrefs() {
         setAPIKey("")
         setUserUniqueId("")
-        setMemberId("")
+        setUUID("")
         setIsGuestUser(false)
     }
 

@@ -52,7 +52,7 @@ internal class ConversationMultipleMediaItemViewDataBinder @Inject constructor(
                 tvCustomTitle,
                 tvCustomTitleDot,
                 data.memberViewData,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 adapterListener,
                 position,
                 conversationViewData = data,
@@ -65,7 +65,7 @@ internal class ConversationMultipleMediaItemViewDataBinder @Inject constructor(
                 ChatroomConversationItemViewDataBinderUtil.initConversationBubbleDeletedTextView(
                     tvConversation,
                     tvDeleteMessage,
-                    sdkPreferences.getMemberId(),
+                    sdkPreferences.getUUID(),
                     conversationViewData = data
                 )
             } else {
@@ -92,7 +92,7 @@ internal class ConversationMultipleMediaItemViewDataBinder @Inject constructor(
 
             ChatroomConversationItemViewDataBinderUtil.initTimeAndStatus(
                 tvTime,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 data.createdAt,
                 data.answer.isEmpty() && data.deletedBy == null,
                 imageViewStatus = ivConversationStatus,
@@ -101,7 +101,7 @@ internal class ConversationMultipleMediaItemViewDataBinder @Inject constructor(
 
             ChatroomConversationItemViewDataBinderUtil.initReplyView(
                 viewReply,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 data.replyConversation,
                 data.replyChatroomId,
                 adapterListener,
@@ -117,7 +117,7 @@ internal class ConversationMultipleMediaItemViewDataBinder @Inject constructor(
 
             ChatroomConversationItemViewDataBinderUtil.initReportView(
                 ivReport,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 adapterListener,
                 conversationViewData = data
             )

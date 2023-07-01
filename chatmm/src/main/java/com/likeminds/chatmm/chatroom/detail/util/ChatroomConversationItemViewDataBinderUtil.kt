@@ -75,7 +75,7 @@ object ChatroomConversationItemViewDataBinderUtil {
         set.clone(clRoot)
         set.clear(clConversationBubble.id, ConstraintSet.RIGHT)
         set.clear(clConversationBubble.id, ConstraintSet.LEFT)
-        if (memberViewData.id.equals(currentMemberId)) {
+        if (memberViewData.sdkClientInfo.uuid == currentMemberId) {
             if (conversationViewData != null && conversationViewData.isFailed() && imageViewFailed != null) {
                 set.connect(
                     clConversationBubble.id,
@@ -370,14 +370,14 @@ object ChatroomConversationItemViewDataBinderUtil {
                 val intent = Route.handleDeepLink(tvConversation.context, url)
                 if (intent == null) {
                     val chatRoomId = chatRoom?.id ?: conversation?.chatroomId
-                    val memberId =
-                        chatRoom?.memberViewData?.id ?: conversation?.memberViewData?.id
+                    val memberUUID =
+                        chatRoom?.memberViewData?.sdkClientInfo?.uuid
                     CustomTabIntent.open(
                         tvConversation.context, url,
                         ReportLinkExtras.Builder()
                             .chatroomId(chatRoomId!!)
                             .conversationId(conversation?.id)
-                            .reportedMemberId(memberId)
+                            .reportedMemberId(memberUUID)
                             .build()
                     )
                 } else {
@@ -696,7 +696,7 @@ object ChatroomConversationItemViewDataBinderUtil {
 
         if (
             conversation == null ||
-            conversation.memberViewData.id != currentMemberId ||
+            conversation.memberViewData.sdkClientInfo.uuid != currentMemberId ||
             conversation.isFailed()
         ) {
             tvTime.setCompoundDrawables(null, null, null, null)
@@ -851,7 +851,7 @@ object ChatroomConversationItemViewDataBinderUtil {
         conversationViewData: ConversationViewData,
     ) {
         if (chatroomDetailAdapterListener.isReportedConversation(conversationViewData.id)
-            && conversationViewData.memberViewData.id != currentMemberId
+            && conversationViewData.memberViewData.sdkClientInfo.uuid != currentMemberId
         ) {
             imageViewReport.visibility = View.VISIBLE
             imageViewReport.setOnClickListener {
@@ -993,6 +993,7 @@ object ChatroomConversationItemViewDataBinderUtil {
         }
     }
 
+    // todo: ask
     fun createReportLinkExtras(data: BaseViewType?): ReportLinkExtras? {
         var reportLinkExtras: ReportLinkExtras? = null
         when (data) {
@@ -1000,14 +1001,14 @@ object ChatroomConversationItemViewDataBinderUtil {
                 reportLinkExtras = ReportLinkExtras.Builder()
                     .chatroomId(data.chatroomId!!)
                     .conversationId(data.id)
-                    .reportedMemberId(data.memberViewData.id)
+                    .reportedMemberId(data.memberViewData.sdkClientInfo.uuid)
                     .build()
             }
             is ChatroomViewData -> {
                 reportLinkExtras = ReportLinkExtras.Builder()
                     .chatroomId(data.id)
                     .conversationId(null)
-                    .reportedMemberId(data.memberViewData?.id)
+                    .reportedMemberId(data.memberViewData?.sdkClientInfo?.uuid)
                     .build()
             }
         }

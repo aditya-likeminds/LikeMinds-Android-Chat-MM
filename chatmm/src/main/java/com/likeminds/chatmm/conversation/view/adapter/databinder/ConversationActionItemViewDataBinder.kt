@@ -67,7 +67,7 @@ class ConversationActionItemViewDataBinder constructor(
                 tvAction.editableText.length,
                 MemberTaggingClickableSpan::class.java
             )
-            val loggedInMemberId = sdkPreferences.getMemberId()
+            val loggedInMemberId = sdkPreferences.getUUID()
 
             spans.reversed().forEach { span ->
                 if (conversation.state != DM_MEMBER_REMOVED_OR_LEFT ||

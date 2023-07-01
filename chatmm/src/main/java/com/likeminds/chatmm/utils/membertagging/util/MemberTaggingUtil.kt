@@ -11,8 +11,8 @@ import androidx.annotation.FloatRange
 import com.likeminds.chatmm.utils.ViewDataConverter
 import com.likeminds.chatmm.utils.membertagging.model.TagViewData
 import com.likeminds.chatmm.utils.membertagging.view.MemberTaggingView
+import com.likeminds.likemindschat.community.model.Member
 import com.likeminds.likemindschat.helper.model.GroupTag
-import com.likeminds.likemindschat.helper.model.UserTag
 
 object MemberTaggingUtil {
 
@@ -29,8 +29,8 @@ object MemberTaggingUtil {
      * */
     fun getTaggingData(
         groupTags: List<GroupTag>,
-        chatroomParticipants: List<UserTag>,
-        communityMembers: List<UserTag>
+        chatroomParticipants: List<Member>,
+        communityMembers: List<Member>
     ): ArrayList<TagViewData> {
         //list send to view
         val listOfGroupAndMember = ArrayList<TagViewData>()
@@ -45,8 +45,8 @@ object MemberTaggingUtil {
 
         //convert members
         val chatroomParticipantsViewData =
-            ArrayList(chatroomParticipants + communityMembers).mapNotNull { userTag ->
-                ViewDataConverter.convertUserTag(userTag)
+            ArrayList(chatroomParticipants + communityMembers).mapNotNull { memberTag ->
+                ViewDataConverter.convertMemberTag(memberTag)
             }
 
         //add to result list

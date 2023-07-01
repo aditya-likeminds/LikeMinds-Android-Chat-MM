@@ -57,7 +57,7 @@ internal class ConversationSingleImageItemViewDataBinder constructor(
                 tvCustomTitle,
                 tvCustomTitleDot,
                 data.memberViewData,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 adapterListener,
                 position,
                 conversationViewData = data,
@@ -70,7 +70,7 @@ internal class ConversationSingleImageItemViewDataBinder constructor(
                 ChatroomConversationItemViewDataBinderUtil.initConversationBubbleDeletedTextView(
                     tvConversation,
                     tvDeleteMessage,
-                    sdkPreferences.getMemberId(),
+                    sdkPreferences.getUUID(),
                     conversationViewData = data
                 )
             } else {
@@ -97,7 +97,7 @@ internal class ConversationSingleImageItemViewDataBinder constructor(
 
             ChatroomConversationItemViewDataBinderUtil.initTimeAndStatus(
                 tvTime,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 data.createdAt,
                 data.answer.isEmpty() && data.deletedBy == null,
                 imageViewStatus = ivConversationStatus,
@@ -106,7 +106,7 @@ internal class ConversationSingleImageItemViewDataBinder constructor(
 
             ChatroomConversationItemViewDataBinderUtil.initReplyView(
                 viewReply,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 data.replyConversation,
                 data.replyChatroomId,
                 adapterListener,
@@ -122,7 +122,7 @@ internal class ConversationSingleImageItemViewDataBinder constructor(
 
             ChatroomConversationItemViewDataBinderUtil.initReportView(
                 ivReport,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 adapterListener,
                 conversationViewData = data
             )

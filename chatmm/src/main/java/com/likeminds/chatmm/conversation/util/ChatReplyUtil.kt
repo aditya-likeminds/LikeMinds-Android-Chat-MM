@@ -79,6 +79,7 @@ object ChatReplyUtil {
         }
     }
 
+    // todo: ask
     private fun getReplyData(
         answer: String,
         memberViewData: MemberViewData,
@@ -90,7 +91,7 @@ object ChatReplyUtil {
     ): ChatReplyViewData {
         val memberName = MemberUtil.getMemberNameForDisplay(memberViewData, currentMemberId)
         val memberState = MemberState.getMemberState(memberViewData.state)
-        val memberId = memberViewData.id
+        val memberId = memberViewData.sdkClientInfo.uuid
 
         val sortedAttachments = attachments?.sortedBy { it.index }.orEmpty()
 

@@ -52,7 +52,7 @@ internal class ConversationSinglePdfItemViewDataBinder constructor(
                 tvCustomTitle,
                 tvCustomTitleDot,
                 data.memberViewData,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 adapterListener,
                 position,
                 conversationViewData = data,
@@ -65,7 +65,7 @@ internal class ConversationSinglePdfItemViewDataBinder constructor(
                 ChatroomConversationItemViewDataBinderUtil.initConversationBubbleDeletedTextView(
                     tvConversation,
                     tvDeleteMessage,
-                    sdkPreferences.getMemberId(),
+                    sdkPreferences.getUUID(),
                     conversationViewData = data
                 )
             } else {
@@ -94,7 +94,7 @@ internal class ConversationSinglePdfItemViewDataBinder constructor(
 
             ChatroomConversationItemViewDataBinderUtil.initTimeAndStatus(
                 tvTime,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 data.createdAt,
                 data.answer.isEmpty() && (data.deletedBy == null),
                 imageViewStatus = ivConversationStatus,
@@ -104,7 +104,7 @@ internal class ConversationSinglePdfItemViewDataBinder constructor(
 
             ChatroomConversationItemViewDataBinderUtil.initReplyView(
                 viewReply,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 data.replyConversation,
                 data.replyChatroomId,
                 adapterListener,
@@ -120,7 +120,7 @@ internal class ConversationSinglePdfItemViewDataBinder constructor(
 
             ChatroomConversationItemViewDataBinderUtil.initReportView(
                 ivReport,
-                sdkPreferences.getMemberId(),
+                sdkPreferences.getUUID(),
                 adapterListener,
                 conversationViewData = data
             )

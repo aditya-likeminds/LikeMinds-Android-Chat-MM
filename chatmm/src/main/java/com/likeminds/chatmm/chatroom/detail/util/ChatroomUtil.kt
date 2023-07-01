@@ -129,12 +129,14 @@ object ChatroomUtil {
         }
     }
 
+    // todo: ask about deleteBy key
     fun getDeletedMessage(
         context: Context,
         conversation: ConversationViewData,
         currentMemberId: String,
     ): String {
-        return if (conversation.memberViewData.userUniqueId == currentMemberId) {
+        val uuid = conversation.memberViewData.sdkClientInfo.uuid
+        return if (uuid == currentMemberId) {
             if (conversation.deletedBy == currentMemberId) {
                 context.getString(R.string.you_deleted_this_message)
             } else {
@@ -154,7 +156,8 @@ object ChatroomUtil {
         chatRoom: ChatroomViewData,
         currentMemberId: String
     ): String {
-        return if (chatRoom.memberViewData?.id == currentMemberId) {
+        val uuid = chatRoom.memberViewData?.sdkClientInfo?.uuid
+        return if (uuid == currentMemberId) {
             if (chatRoom.deletedBy == currentMemberId) {
                 context.getString(R.string.you_deleted_this_message)
             } else {

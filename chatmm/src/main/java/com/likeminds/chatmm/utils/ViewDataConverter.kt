@@ -3,6 +3,7 @@ package com.likeminds.chatmm.utils
 import android.net.Uri
 import com.likeminds.chatmm.chatroom.detail.model.ChatroomViewData
 import com.likeminds.chatmm.chatroom.detail.model.MemberViewData
+import com.likeminds.chatmm.chatroom.detail.model.SDKClientInfoViewData
 import com.likeminds.chatmm.chatroom.explore.model.ExploreViewData
 import com.likeminds.chatmm.conversation.model.AttachmentMetaViewData
 import com.likeminds.chatmm.conversation.model.AttachmentViewData
@@ -16,7 +17,7 @@ import com.likeminds.likemindschat.conversation.model.Attachment
 import com.likeminds.likemindschat.conversation.model.Conversation
 import com.likeminds.likemindschat.conversation.model.LinkOGTags
 import com.likeminds.likemindschat.helper.model.GroupTag
-import com.likeminds.likemindschat.helper.model.UserTag
+import com.likeminds.likemindschat.user.model.SDKClientInfo
 import com.likeminds.likemindschat.user.model.User
 
 object ViewDataConverter {
@@ -25,6 +26,7 @@ object ViewDataConverter {
      * Network Model -> View Data Model
     --------------------------------*/
 
+    // converts Chatroom network model to view data model
     fun convertChatroom(chatroom: Chatroom): ChatroomViewData {
         // todo: member state
         return ChatroomViewData.Builder()
@@ -32,7 +34,7 @@ object ViewDataConverter {
             .communityId(chatroom.communityId)
             .communityName(chatroom.communityName)
             .memberViewData(convertMember(chatroom.member))
-//            .createdAt(chatroom.createdAt)
+            .createdAt(chatroom.createdAt)
             .title(chatroom.title)
             .answerText(chatroom.answerText)
             .state(chatroom.state)
@@ -62,7 +64,7 @@ object ViewDataConverter {
         if (chatroom == null) return null
         return ExploreViewData.Builder()
             .isPinned(chatroom.isPinned)
-            .isCreator(chatroom.member?.id == memberId)
+            .isCreator(chatroom.member?.sdkClientInfo?.uuid == memberId)
             .externalSeen(chatroom.externalSeen)
             .isSecret(chatroom.isSecret)
             .followStatus(chatroom.followStatus)
@@ -78,6 +80,7 @@ object ViewDataConverter {
             .build()
     }
 
+    // todo: uuid change in delete cases
     /**
      * convert [Conversation] to [ConversationViewData]
      */
@@ -108,6 +111,7 @@ object ViewDataConverter {
             .build()
     }
 
+    // converts Member network model to view data model
     private fun convertMember(member: Member?): MemberViewData? {
         // todo: uid
         if (member == null) {
@@ -118,17 +122,29 @@ object ViewDataConverter {
             .name(member.name)
             .imageUrl(member.imageUrl)
             .state(member.state ?: 0)
-            .removeState(member.removeState)
             .customIntroText(member.customIntroText)
             .customClickText(member.customClickText)
             .customTitle(member.customTitle)
             .communityId(member.communityId.toString())
             .isOwner(member.isOwner)
             .isGuest(member.isGuest)
+            .sdkClientInfo(convertSDKClientInfo(member.sdkClientInfo))
             .build()
     }
 
-    // converts LinkOGTags view data model to network model
+    // converts SDKClientInfo network model to view data model
+    private fun convertSDKClientInfo(
+        sdkClientInfo: SDKClientInfo
+    ): SDKClientInfoViewData {
+        return SDKClientInfoViewData.Builder()
+            .communityId(sdkClientInfo.community)
+            .user(sdkClientInfo.user)
+            .userUniqueId(sdkClientInfo.userUniqueId)
+            .uuid(sdkClientInfo.uuid)
+            .build()
+    }
+
+    // converts LinkOGTags network model to view data model
     private fun convertOGTags(
         linkOGTags: LinkOGTags?
     ): LinkOGTagsViewData? {
@@ -204,20 +220,23 @@ object ViewDataConverter {
             .build()
     }
 
-    fun convertUserTag(userTag: UserTag?): TagViewData? {
-        if (userTag == null) return null
+    // todo: ask about id
+    fun convertMemberTag(memberTag: Member?): TagViewData? {
+        if (memberTag == null) return null
+        val uuid = memberTag.sdkClientInfo?.uuid
         val nameDrawable = MemberImageUtil.getNameDrawable(
             MemberImageUtil.SIXTY_PX,
-            userTag.id.toString(),
-            userTag.name
+            uuid,
+            memberTag.name
         )
         return TagViewData.Builder()
-            .name(userTag.name)
-            .id(userTag.id)
-            .imageUrl(userTag.imageUrl)
-            .isGuest(userTag.isGuest)
-            .userUniqueId(userTag.userUniqueId)
+            .name(memberTag.name)
+//            .id(memberTag.id)
+            .imageUrl(memberTag.imageUrl)
+            .isGuest(memberTag.isGuest)
+            .userUniqueId(memberTag.userUniqueId)
             .placeHolder(nameDrawable.first)
+            .sdkClientInfo(convertSDKClientInfo(memberTag.sdkClientInfo))
             .build()
     }
 
