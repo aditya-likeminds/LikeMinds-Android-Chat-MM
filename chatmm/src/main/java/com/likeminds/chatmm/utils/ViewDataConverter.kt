@@ -55,16 +55,15 @@ object ViewDataConverter {
             .build()
     }
 
-    // todo: member to uuid
     fun convertChatroom(
         chatroom: Chatroom?,
-        memberId: String,
+        memberUUID: String,
         sortIndex: Int
     ): ExploreViewData? {
         if (chatroom == null) return null
         return ExploreViewData.Builder()
             .isPinned(chatroom.isPinned)
-            .isCreator(chatroom.member?.sdkClientInfo?.uuid == memberId)
+            .isCreator(chatroom.member?.sdkClientInfo?.uuid == memberUUID)
             .externalSeen(chatroom.externalSeen)
             .isSecret(chatroom.isSecret)
             .followStatus(chatroom.followStatus)
@@ -80,7 +79,7 @@ object ViewDataConverter {
             .build()
     }
 
-    // todo: uuid change in delete cases
+    // todo: change from backend in deletedBy key
     /**
      * convert [Conversation] to [ConversationViewData]
      */
@@ -112,10 +111,9 @@ object ViewDataConverter {
     }
 
     // converts Member network model to view data model
-    private fun convertMember(member: Member?): MemberViewData? {
-        // todo: uid
+    private fun convertMember(member: Member?): MemberViewData {
         if (member == null) {
-            return null
+            return MemberViewData.Builder().build()
         }
         return MemberViewData.Builder()
             .id(member.id)
@@ -134,8 +132,11 @@ object ViewDataConverter {
 
     // converts SDKClientInfo network model to view data model
     private fun convertSDKClientInfo(
-        sdkClientInfo: SDKClientInfo
+        sdkClientInfo: SDKClientInfo?
     ): SDKClientInfoViewData {
+        if (sdkClientInfo == null) {
+            return SDKClientInfoViewData.Builder().build()
+        }
         return SDKClientInfoViewData.Builder()
             .communityId(sdkClientInfo.community)
             .user(sdkClientInfo.user)
@@ -220,7 +221,7 @@ object ViewDataConverter {
             .build()
     }
 
-    // todo: ask about id
+    // todo: check id
     fun convertMemberTag(memberTag: Member?): TagViewData? {
         if (memberTag == null) return null
         val uuid = memberTag.sdkClientInfo?.uuid
@@ -231,7 +232,7 @@ object ViewDataConverter {
         )
         return TagViewData.Builder()
             .name(memberTag.name)
-//            .id(memberTag.id)
+            .id(memberTag.id.toInt())
             .imageUrl(memberTag.imageUrl)
             .isGuest(memberTag.isGuest)
             .userUniqueId(memberTag.userUniqueId)

@@ -79,7 +79,6 @@ object ChatReplyUtil {
         }
     }
 
-    // todo: ask
     private fun getReplyData(
         answer: String,
         memberViewData: MemberViewData,

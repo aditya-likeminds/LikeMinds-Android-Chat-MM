@@ -156,8 +156,8 @@ object MemberTaggingDecoder {
             val memberName = tag[0]
             val memberRoute = tag[1]
             val routeSplits = memberRoute.split("/".toRegex())
-            val memberId = routeSplits[routeSplits.size - 1]
-            result.add(Pair(memberId, memberName))
+            val memberUUID = routeSplits[routeSplits.size - 1]
+            result.add(Pair(memberUUID, memberName))
         }
         return result
     }

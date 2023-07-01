@@ -36,31 +36,32 @@ object Route {
     private fun getRouteFromDeepLink(data: Uri?): String? {
         val host = data?.host ?: return null
         val firstPathSegment = data.pathSegments.firstOrNull()
-        if (host == getLmWebHost() && firstPathSegment == DEEP_LINK_CHATROOM) {
-            return createCollabcardRoute(data)
-        }
-        if (!isLMHost(host)) {
-            return createWebsiteRoute(data)
-        }
-        return when {
-            data.scheme == DEEP_LINK_SCHEME -> {
-                when (firstPathSegment) {
-                    DEEP_LINK_COMMUNITY_FEED -> {
-                        createCommunityFeedRoute(data)
-                    }
-                    DEEP_LINK_CREATE_COMMUNITY -> {
-                        createCommunityCreateRoute()
-                    }
-                    else -> null
-                }
-            }
-            firstPathSegment == DEEP_LINK_CHATROOM -> {
-                createCollabcardRoute(data)
-            }
-            else -> {
-                createWebsiteRoute(data)
-            }
-        }
+        return null
+//        if (host == getLmWebHost() && firstPathSegment == DEEP_LINK_CHATROOM) {
+//            return createCollabcardRoute(data)
+//        }
+//        if (!isLMHost(host)) {
+//            return createWebsiteRoute(data)
+//        }
+//        return when {
+//            data.scheme == DEEP_LINK_SCHEME -> {
+//                when (firstPathSegment) {
+//                    DEEP_LINK_COMMUNITY_FEED -> {
+//                        createCommunityFeedRoute(data)
+//                    }
+//                    DEEP_LINK_CREATE_COMMUNITY -> {
+//                        createCommunityCreateRoute()
+//                    }
+//                    else -> null
+//                }
+//            }
+//            firstPathSegment == DEEP_LINK_CHATROOM -> {
+//                createCollabcardRoute(data)
+//            }
+//            else -> {
+//                createWebsiteRoute(data)
+//            }
+//        }
     }
 
     // todo: removed profle routes

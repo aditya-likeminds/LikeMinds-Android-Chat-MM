@@ -129,7 +129,7 @@ object ChatroomUtil {
         }
     }
 
-    // todo: ask about deleteBy key
+    // todo: backend change for deletedBy key
     fun getDeletedMessage(
         context: Context,
         conversation: ConversationViewData,
@@ -143,7 +143,8 @@ object ChatroomUtil {
                 context.getString(R.string.your_message_was_deleted_by_cm)
             }
         } else {
-            if (conversation.memberViewData.id == conversation.deletedBy) {
+            // todo: deletedBy should also be equal to uuid from backend side
+            if (conversation.memberViewData.sdkClientInfo.uuid == conversation.deletedBy) {
                 context.getString(R.string.this_message_was_deleted)
             } else {
                 context.getString(R.string.this_message_was_deleted_by_cm)
