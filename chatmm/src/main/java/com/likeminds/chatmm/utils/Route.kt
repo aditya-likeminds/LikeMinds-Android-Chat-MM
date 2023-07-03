@@ -3,21 +3,50 @@ package com.likeminds.chatmm.utils
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import com.facebook.common.util.UriUtil.HTTPS_SCHEME
+import com.facebook.common.util.UriUtil.HTTP_SCHEME
+import com.likeminds.chatmm.LMAnalytics
 import com.likeminds.chatmm.chatroom.detail.model.ChatroomDetailExtras
 import com.likeminds.chatmm.chatroom.detail.view.ChatroomDetailActivity
 
 object Route {
     // todo:
+    private const val ROUTE_SCHEME = "route"
     const val ROUTE_CHATROOM = "collabcard"
     const val ROUTE_CHATROOM_DETAIL = "chatroom_detail"
     const val ROUTE_BROWSER = "browser"
     const val ROUTE_MAIL = "mail"
     const val ROUTE_MEMBER = "member"
     const val ROUTE_MEMBER_PROFILE = "member_profile"
+    const val ROUTE_COMMUNITY_FEED = "community_feed"
+    const val ROUTE_POLL_CHATROOM = "poll_chatroom"
+    const val ROUTE_SYNC = "sync"
+
+    private const val DEEP_LINK_CHATROOM = "collabcard"
+    private const val DEEP_LINK_SCHEME = "likeminds"
+    private const val DEEP_LINK_COMMUNITY_FEED = "community_feed"
 
     const val PARAM_SOURCE_CHATROOM_ID = "source_chatroom_id"
     const val PARAM_SOURCE_COMMUNITY_ID = "source_community_id"
     private const val PARAM_COHORT_ID = "cohort_id"
+
+    fun getQueryParam(route: String?, param: String?): String? {
+        if (route.isNullOrEmpty() || param.isNullOrEmpty()) {
+            return null
+        }
+        return try {
+            Uri.parse(route)?.getQueryParameter(param)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    fun getHost(route: String?): String? {
+        if (route == null) {
+            return null
+        }
+        return Uri.parse(route).host
+    }
 
     fun handleDeepLink(context: Context, url: String?): Intent? {
         val data = Uri.parse(url) ?: return null
@@ -36,11 +65,8 @@ object Route {
     private fun getRouteFromDeepLink(data: Uri?): String? {
         val host = data?.host ?: return null
         val firstPathSegment = data.pathSegments.firstOrNull()
-        if (host == getLmWebHost() && firstPathSegment == DEEP_LINK_CHATROOM) {
-            return createCollabcardRoute(data)
-        }
-        if (!isLMHost(host)) {
-            return createWebsiteRoute(data)
+        if (firstPathSegment == DEEP_LINK_CHATROOM) {
+            return createChatroomRoute(data)
         }
         return when {
             data.scheme == DEEP_LINK_SCHEME -> {
@@ -48,19 +74,54 @@ object Route {
                     DEEP_LINK_COMMUNITY_FEED -> {
                         createCommunityFeedRoute(data)
                     }
-                    DEEP_LINK_CREATE_COMMUNITY -> {
-                        createCommunityCreateRoute()
-                    }
                     else -> null
                 }
-            }
-            firstPathSegment == DEEP_LINK_CHATROOM -> {
-                createCollabcardRoute(data)
             }
             else -> {
                 createWebsiteRoute(data)
             }
         }
+    }
+
+    //https://www.likeminds.community/collabcard/<collabcard_id>
+    private fun createChatroomRoute(data: Uri): String? {
+        val chatroomId = data.lastPathSegment ?: return null
+        val cohortId = data.getQueryParameter(PARAM_COHORT_ID)
+        return Uri.Builder()
+            .scheme("route")
+            .authority(ROUTE_CHATROOM)
+            .appendQueryParameter("collabcard_id", chatroomId)
+            .appendQueryParameter(PARAM_COHORT_ID, cohortId)
+            .build()
+            .toString()
+    }
+
+    /**
+     * Community website deep link
+     * https://community.likeminds.community/deutsch-in-tandem
+     * @return a url with host as route, eg : route://browser
+     */
+    fun createWebsiteRoute(data: Uri): String? {
+        if (data.scheme == HTTPS_SCHEME || data.scheme == HTTP_SCHEME) {
+            return Uri.Builder()
+                .scheme(ROUTE_SCHEME)
+                .authority(ROUTE_BROWSER)
+                .appendQueryParameter("link", data.toString())
+                .build()
+                .toString()
+        }
+        return null
+    }
+
+    //https://www.likeminds.community/community_collabcard?community_id=&community_name=
+    private fun createCommunityFeedRoute(data: Uri): String {
+        return Uri.Builder()
+            .scheme("route")
+            .authority(ROUTE_COMMUNITY_FEED)
+            .appendQueryParameter("community_id", data.getQueryParameter("community_id"))
+            .appendQueryParameter("community_name", data.getQueryParameter("community_name"))
+            .build()
+            .toString()
     }
 
     // todo: removed profle routes
@@ -111,23 +172,22 @@ object Route {
         val sourceCommunityId = route.getQueryParameter(PARAM_SOURCE_COMMUNITY_ID)
         val cohortId = route.getQueryParameter(PARAM_COHORT_ID)
 
-        // todo:
         val builder = ChatroomDetailExtras.Builder()
-//            .chatroomId(chatroomId.toString())
-//            .source(source)
-//            .sourceChatroomId(sourceChatroomId)
-//            .sourceCommunityId(sourceCommunityId)
-//            .cohortId(cohortId)
+            .chatroomId(chatroomId.toString())
+            .source(source)
+            .sourceChatroomId(sourceChatroomId)
+            .sourceCommunityId(sourceCommunityId)
+            .cohortId(cohortId)
 
-//        when (source) {
-//            LMAnalytics.Sources.SOURCE_NOTIFICATION -> {
-//                builder.fromNotification(true).sourceLinkOrRoute(route.toString())
-//            }
-//
-//            LMAnalytics.Sources.SOURCE_DEEP_LINK -> {
-//                builder.openedFromLink(true).sourceLinkOrRoute(deepLinkUrl)
-//            }
-//        }
+        when (source) {
+            LMAnalytics.Source.NOTIFICATION -> {
+                builder.fromNotification(true).sourceLinkOrRoute(route.toString())
+            }
+
+            LMAnalytics.Source.DEEP_LINK -> {
+                builder.openedFromLink(true).sourceLinkOrRoute(deepLinkUrl)
+            }
+        }
 
         return ChatroomDetailActivity.getIntent(
             context,
@@ -178,21 +238,20 @@ object Route {
         val chatroomId = route.getQueryParameter("chatroom_id")
         val conversationId = route.getQueryParameter("conversation_id")
 
-        // todo:
         val builder = ChatroomDetailExtras.Builder()
-//            .chatroomId(chatroomId.toString())
-//            .conversationId(conversationId)
-//            .source(source)
+            .chatroomId(chatroomId.toString())
+            .conversationId(conversationId)
+            .source(source)
 
-//        when (source) {
-//            LMAnalytics.Sources.SOURCE_NOTIFICATION -> {
-//                builder.fromNotification(true).sourceLinkOrRoute(route.toString())
-//            }
-//
-//            LMAnalytics.Sources.SOURCE_DEEP_LINK -> {
-//                builder.openedFromLink(true).sourceLinkOrRoute(deepLinkUrl)
-//            }
-//        }
+        when (source) {
+            LMAnalytics.Source.NOTIFICATION -> {
+                builder.fromNotification(true).sourceLinkOrRoute(route.toString())
+            }
+
+            LMAnalytics.Source.DEEP_LINK -> {
+                builder.openedFromLink(true).sourceLinkOrRoute(deepLinkUrl)
+            }
+        }
 
         return ChatroomDetailActivity.getIntent(
             context,
@@ -218,5 +277,13 @@ object Route {
         } else {
             value
         }
+    }
+
+    //route://poll_chatroom?chatroom_id=<>&poll_end=<true/false>
+    fun getPollRouteQueryParameters(route: String): Pair<String?, Boolean> {
+        val routeUri = Uri.parse(route)
+        val chatroomId = routeUri.getQueryParameter("chatroom_id")
+        val pollEnd = routeUri.getBooleanQueryParameter("poll_end", false)
+        return Pair(chatroomId, pollEnd)
     }
 }

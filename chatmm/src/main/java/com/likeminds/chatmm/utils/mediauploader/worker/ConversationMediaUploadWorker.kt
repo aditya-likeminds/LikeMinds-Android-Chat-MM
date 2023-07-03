@@ -4,10 +4,11 @@ import android.content.Context
 import androidx.work.*
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
-import com.likeminds.chatmm.conversation.model.ConversationViewData
 import com.likeminds.chatmm.utils.mediauploader.model.AWSFileResponse
 import com.likeminds.chatmm.utils.mediauploader.model.GenericFileRequest
 import com.likeminds.chatmm.utils.mediauploader.model.WORKER_SUCCESS
+import com.likeminds.likemindschat.conversation.model.Attachment
+import com.likeminds.likemindschat.conversation.model.Conversation
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
@@ -19,7 +20,7 @@ class ConversationMediaUploadWorker(
     private val conversationId by lazy { getStringParam(ARG_CONVERSATION_ID) }
     private val totalMediaCount by lazy { getIntParam(ARG_TOTAL_MEDIA_COUNT) }
 
-    private lateinit var conversation: ConversationViewData
+    private lateinit var conversation: Conversation
 
     companion object {
         const val ARG_CONVERSATION_ID = "ARG_CONVERSATION_ID"
@@ -52,12 +53,16 @@ class ConversationMediaUploadWorker(
     }
 
     override fun init() {
-        conversation = chatRoomDb.getConversation(conversationId)!!
+        // todo:
+//        conversation = chatRoomDb.getConversation(conversationId)!!
     }
 
     override fun uploadFiles(continuation: Continuation<Int>) {
-        val attachmentsToUpload = conversation.attachmentsToUpload()
-        val thumbnailsToUpload = conversation.thumbnailsToUpload()
+        // todo:
+//        val attachmentsToUpload = conversation.attachmentsToUpload()
+        val attachmentsToUpload = emptyList<Attachment>()
+        val thumbnailsToUpload = emptyList<Attachment>()
+//        val thumbnailsToUpload = conversation.thumbnailsToUpload()
         val totalFilesToUpload = attachmentsToUpload?.size ?: 0
 
         if (attachmentsToUpload.isNullOrEmpty() && thumbnailsToUpload.isNullOrEmpty()) {
@@ -65,7 +70,7 @@ class ConversationMediaUploadWorker(
             return
         }
 
-        uploadList = createAWSRequestList(thumbnailsToUpload, attachmentsToUpload)
+//        uploadList = createAWSRequestList(thumbnailsToUpload, attachmentsToUpload)
         uploadList.forEach { request ->
             val resumeAWSFileResponse =
                 UploadHelper.getAWSFileResponse(request.awsFolderPath)
@@ -96,11 +101,12 @@ class ConversationMediaUploadWorker(
         totalFilesToUpload: Int,
         continuation: Continuation<Int>
     ) {
-        val awsFileResponse = fileReceiver.uploadFile(request, conversation.uploadWorkerUUID)
-        if (awsFileResponse != null) {
-            UploadHelper.addAWSFileResponse(awsFileResponse)
-            uploadAWSFile(awsFileResponse, totalFilesToUpload, continuation)
-        }
+        // todo:
+//        val awsFileResponse = fileReceiver.uploadFile(request, conversation.uploadWorkerUUID)
+//        if (awsFileResponse != null) {
+//            UploadHelper.addAWSFileResponse(awsFileResponse)
+//            uploadAWSFile(awsFileResponse, totalFilesToUpload, continuation)
+//        }
     }
 
     private fun uploadAWSFile(
@@ -148,14 +154,14 @@ class ConversationMediaUploadWorker(
                         } else if (value.second == null) {
                             thumbnailMediaMap[response.index] = Pair(value.first, downloadUri)
                         }
-                        uploadUrl(
-                            thumbnailMediaMap[response.index],
-                            totalMediaCount,
-                            response,
-                            totalFilesToUpload,
-                            conversation,
-                            continuation
-                        )
+//                        uploadUrl(
+//                            thumbnailMediaMap[response.index],
+//                            totalMediaCount,
+//                            response,
+//                            totalFilesToUpload,
+//                            conversation,
+//                            continuation
+//                        )
                         thumbnailMediaMap.remove(response.index)
                     } else {
                         if (response.isThumbnail == true) {
@@ -165,14 +171,14 @@ class ConversationMediaUploadWorker(
                         }
                     }
                 } else {
-                    uploadUrl(
-                        Pair(downloadUri, null),
-                        totalMediaCount,
-                        response,
-                        totalFilesToUpload,
-                        conversation,
-                        continuation
-                    )
+//                    uploadUrl(
+//                        Pair(downloadUri, null),
+//                        totalMediaCount,
+//                        response,
+//                        totalFilesToUpload,
+//                        conversation,
+//                        continuation
+//                    )
                 }
             }
             TransferState.FAILED -> {

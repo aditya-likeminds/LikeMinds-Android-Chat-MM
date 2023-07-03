@@ -73,7 +73,7 @@ import com.likeminds.chatmm.media.view.MediaActivity
 import com.likeminds.chatmm.media.view.MediaActivity.Companion.BUNDLE_MEDIA_EXTRAS
 import com.likeminds.chatmm.media.view.MediaPickerActivity
 import com.likeminds.chatmm.media.view.MediaPickerActivity.Companion.ARG_MEDIA_PICKER_RESULT
-import com.likeminds.chatmm.pushnotification.NotificationUtils
+import com.likeminds.chatmm.pushnotification.util.NotificationUtils
 import com.likeminds.chatmm.utils.*
 import com.likeminds.chatmm.utils.ValueUtils.getEmailIfExist
 import com.likeminds.chatmm.utils.ValueUtils.getMaxCountNumberText

@@ -1,10 +1,10 @@
-package com.likeminds.chatmm.pushnotification
+package com.likeminds.chatmm.pushnotification.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-internal class NotificationActionData private constructor(
+class NotificationActionData private constructor(
     var chatroomId: Int?,
     var communityId: Int?,
     var groupRoute: String,

@@ -8,6 +8,7 @@ import com.likeminds.chatmm.conversation.model.AttachmentMetaViewData
 import com.likeminds.chatmm.conversation.model.AttachmentViewData
 import com.likeminds.chatmm.conversation.model.ConversationViewData
 import com.likeminds.chatmm.conversation.model.LinkOGTagsViewData
+import com.likeminds.chatmm.pushnotification.model.ChatroomNotificationViewData
 import com.likeminds.chatmm.utils.membertagging.model.TagViewData
 import com.likeminds.chatmm.utils.model.ITEM_HOME_CHAT_ROOM
 import com.likeminds.likemindschat.chatroom.model.Chatroom
@@ -17,6 +18,7 @@ import com.likeminds.likemindschat.conversation.model.Conversation
 import com.likeminds.likemindschat.conversation.model.LinkOGTags
 import com.likeminds.likemindschat.helper.model.GroupTag
 import com.likeminds.likemindschat.helper.model.UserTag
+import com.likeminds.likemindschat.notification.model.ChatroomNotificationData
 import com.likeminds.likemindschat.user.model.User
 
 object ViewDataConverter {
@@ -108,6 +110,42 @@ object ViewDataConverter {
             .build()
     }
 
+    fun convertChatroomNotificationDataList(
+        unreadConversations: List<ChatroomNotificationData>
+    ): List<ChatroomNotificationViewData> {
+        return unreadConversations.map {
+            convertChatroomNotificationData(it)
+        }
+    }
+
+    private fun convertChatroomNotificationData(
+        unreadConversation: ChatroomNotificationData
+    ): ChatroomNotificationViewData {
+        return ChatroomNotificationViewData.Builder()
+            .communityName(unreadConversation.communityName)
+            .chatroomName(unreadConversation.chatroomName)
+            .chatroomTitle(unreadConversation.chatroomTitle)
+            .chatroomUserName(unreadConversation.chatroomUserName)
+            .chatroomUserImage(unreadConversation.chatroomUserImage)
+            .chatroomId(unreadConversation.chatroomId)
+            .communityImage(unreadConversation.communityImage)
+            .communityId(unreadConversation.communityId)
+            .route(unreadConversation.route)
+            .chatroomUnreadConversationCount(unreadConversation.chatroomUnreadConversationCount)
+            .chatroomLastConversation(unreadConversation.chatroomLastConversation)
+            .chatroomLastConversationUserName(unreadConversation.chatroomLastConversationUserName)
+            .chatroomLastConversationUserImage(unreadConversation.chatroomLastConversationUserImage)
+            .routeChild(unreadConversation.routeChild)
+            .chatroomLastConversationUserTimestamp(unreadConversation.chatroomLastConversationUserTimestamp)
+            .attachments(
+                unreadConversation.attachments?.mapNotNull { attachment ->
+                    convertAttachment(attachment)
+                }?.let {
+                    ArrayList(it)
+                })
+            .build()
+    }
+
     private fun convertMember(member: Member?): MemberViewData {
         // todo: uid
         if (member == null) {
@@ -163,6 +201,7 @@ object ViewDataConverter {
         return AttachmentViewData.Builder()
             .id(attachment.id)
             .name(attachment.name)
+            .url(attachment.url)
             .uri(Uri.parse(attachment.url))
             .type(attachment.type)
             .index(attachment.index)
