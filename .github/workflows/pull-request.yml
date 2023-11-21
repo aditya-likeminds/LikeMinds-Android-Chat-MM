@@ -31,6 +31,12 @@ jobs:
     - name: Display Google Services JSON Content
       run: cat app/google-services.json
 
+    - name: Save JSON File as Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: google-services
+        path: app/google-services.json
+
     - name: Run tests
       run: ./gradlew test
 
