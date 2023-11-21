@@ -25,8 +25,11 @@ jobs:
     - name: Validate Gradle wrapper
       uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
 
-    - name: Configure Google Services JSON
-      run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
+    - name: Decode Google Services JSON
+      run: |
+        export decoded_content=$(echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode)
+        echo "$decoded_content"
+        echo "$decoded_content" > app/src/debug/google-services.json
 
     - name: Run tests
       run: ./gradlew test
